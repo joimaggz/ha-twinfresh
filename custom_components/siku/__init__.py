@@ -11,6 +11,11 @@ from .coordinator import SikuDataUpdateCoordinator
 
 PLATFORMS: list[Platform] = [Platform.FAN]
 
+PLATFORMS: list[Platform] = [
+    Platform.FAN,
+    Platform.SENSOR,
+]
+
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Siku Fan from a config entry."""
