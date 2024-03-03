@@ -33,6 +33,7 @@ RETURN_HIGH_BYTE = "FF"
 
 COMMAND_ON_OFF = "01"
 COMMAND_SPEED = "02"
+COMMAND_CURRENT_HUMIDITY = "25"
 COMMAND_DIRECTION = "B7"
 COMMAND_DEVICE_TYPE = "B9"
 COMMAND_MODE = "07"
@@ -69,7 +70,7 @@ class SikuV2Api:
 
     async def status(self) -> dict:
         """Get status from fan controller."""
-        cmd = f"{COMMAND_DEVICE_TYPE}{COMMAND_ON_OFF}{COMMAND_SPEED}{COMMAND_DIRECTION}{COMMAND_MODE}".upper()
+        cmd = f"{COMMAND_DEVICE_TYPE}{COMMAND_ON_OFF}{COMMAND_SPEED}{COMMAND_CURRENT_HUMIDITY}{COMMAND_DIRECTION}{COMMAND_MODE}".upper()
         hexlist = await self._send_command(FUNC_READ, cmd)
         data = await self._parse_response(hexlist)
         return await self._translate_response(data)
