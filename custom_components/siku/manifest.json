@@ -1,6 +1,6 @@
 {
-  "domain": "siku",
-  "name": "Siku Fan",
+  "domain": "Twinfresh",
+  "name": "Twinfresh Fan",
   "codeowners": ["@hmn"],
   "config_flow": true,
   "dependencies": [],
