@@ -34,7 +34,7 @@ async def async_setup_entry(
     async_add_entities([dukaonesensor], True)
 
 
-class DukaOneHumidity(Entity, DukaEntity):
+class DukaOneHumidity(Entity, SikaEntity):
     """A Duka One humidity sensor entity."""
 
     def __init__(self, hass: HomeAssistantType, name: str, device_id: str):
