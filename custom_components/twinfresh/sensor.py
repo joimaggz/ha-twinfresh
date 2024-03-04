@@ -15,7 +15,7 @@ from homeassistant.const import (
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.typing import HomeAssistantType
 
-from .fan import SikuEntity
+from .fan import SikuFan
 
 _LOGGER = logging.getLogger(__name__)
 
