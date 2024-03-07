@@ -20,7 +20,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
     """Set up the sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_devices(
-        IntegrationBlueprintSensor(
+        SikuSensor(
             coordinator=coordinator,
             entity_description=entity_description,
         )
@@ -28,8 +28,8 @@ async def async_setup_entry(hass, entry, async_add_devices):
     )
 
 
-class IntegrationBlueprintSensor(IntegrationBlueprintEntity, SensorEntity):
-    """integration_blueprint Sensor class."""
+class SikuSensor(SikuEntity, SensorEntity):
+    """Siku Sensor class."""
 
     def __init__(
         self,
