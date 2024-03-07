@@ -75,6 +75,13 @@ class SikuV2Api:
         data = await self._parse_response(hexlist)
         return await self._translate_response(data)
 
+    async def humidity(self) -> dict:
+        """Get humidity data from the fan controller."""
+        cmd = f"{COMMAND_CURRENT_HUMIDITY}".upper()
+        hexlist = await self._send_command(FUNC_READ, cmd)
+        data = await self._parse_response(hexlist)
+        return data.get(COMMAND_CURRENT_HUMIDITY, None)
+
     async def power_on(self) -> None:
         """Power on fan."""
         cmd = f"{COMMAND_ON_OFF}{POWER_ON}".upper()
@@ -119,13 +126,6 @@ class SikuV2Api:
         cmd = f"{COMMAND_ON_OFF}{POWER_ON}{COMMAND_MODE}{MODE_PARTY}".upper()
         await self._send_command(FUNC_READ_WRITE, cmd)
         return await self.status()
-
-    async def humidity(self) -> dict:
-        """Get humidity data from the fan controller."""
-        cmd = f"{COMMAND_CURRENT_HUMIDITY}".upper()
-        hexlist = await self._send_command(FUNC_READ, cmd)
-        data = await self._parse_response(hexlist)
-        return data.get(COMMAND_CURRENT_HUMIDITY, None)
 
     def _checksum(self, data: str) -> str:
         """Calculate checksum for packet and return it as high order byte hex string."""
