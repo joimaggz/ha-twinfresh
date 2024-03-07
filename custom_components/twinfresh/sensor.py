@@ -33,7 +33,7 @@ class SikuSensor(SikuEntity, SensorEntity):
 
     def __init__(
         self,
-        coordinator: BlueprintDataUpdateCoordinator,
+        coordinator: SikuDataUpdateCoordinator,
         entity_description: SensorEntityDescription,
     ) -> None:
         """Initialize the sensor class."""
