@@ -1,30 +1,42 @@
 """Sensor platform for integration_blueprint."""
 from __future__ import annotations
 
-from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+import logging
+from typing import Any
 
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+    SensorEntity,
+    SensorEntityDescription,
+    SensorStateClass,
+)
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import callback
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+
+from . import SikuEntity
+from .const import DEFAULT_NAME
 from .const import DOMAIN
 from .coordinator import SikuDataUpdateCoordinator
-from . import SikuEntity
 
-ENTITY_DESCRIPTIONS = (
-    SensorEntityDescription(
-        key="Twinfresh integration",
-        name="Humidity Sensor",
-        icon="mdi:format-quote-close",
-    ),
-)
+LOGGER = logging.getLogger(__name__)
 
-
-async def async_setup_entry(hass, entry, async_add_devices):
-    """Set up the sensor platform."""
-    coordinator = hass.data[DOMAIN][entry.entry_id]
-    async_add_devices(
-        SikuSensor(
-            coordinator=coordinator,
-            entity_description=entity_description,
-        )
-        for entity_description in ENTITY_DESCRIPTIONS
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up the Siku sensor."""
+    async_add_entities(
+        [
+            SikuSensor(
+                hass,
+                hass.data[DOMAIN][entry.entry_id],
+                f"{entry.entry_id}",
+                DEFAULT_NAME,
+            )
+        ]
     )
 
 
@@ -33,12 +45,18 @@ class SikuSensor(SikuEntity, SensorEntity):
 
     def __init__(
         self,
+        hass: HomeAssistant,
         coordinator: SikuDataUpdateCoordinator,
-        entity_description: SensorEntityDescription,
+        unique_id: str,
+        name: str,
     ) -> None:
-        """Initialize the sensor class."""
+        """Initialize the entity."""
         super().__init__(coordinator)
-        self.entity_description = entity_description
+        self.hass = hass
+        self._unique_id = unique_id
+        if name is None:
+            name = {DEFAULT_NAME}
+        self._attr_name = f"{name} {coordinator.api.host}"
 
     @property
     def native_value(self) -> str:
